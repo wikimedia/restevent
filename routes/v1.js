@@ -66,7 +66,7 @@ var validateMessage = ajv.compile(exampleSchema);
  */
 router.put('/topics/:name', function(req, res) {
     producer.createTopics([req.params.name]);
-    res.end(200);
+    res.send('Topic created', 200);
 });
 /*
  * Expected layout
@@ -97,10 +97,13 @@ function validateMessages(topic, messages) {
  * Enqueue one or more events. Each event needs to conform to the JSON schema
  * associated with this topic.
  */
-router.get('/topics/:name', function(req, res) {
+router.post('/topics/:name', function(req, res) {
     return P.try(function() {
         var message = validateMessages(req.params.name, req.body);
         return producer.sendAsync([message]);
+    })
+    .then(function(res) {
+        res.send('Message enqueued', 200);
     });
 });
 
