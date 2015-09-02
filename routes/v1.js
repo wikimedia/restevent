@@ -11,13 +11,17 @@ var HighLevelProducer = kafka.HighLevelProducer;
 var KeyedMessage = kafka.KeyedMessage;
 
 var options = {
-    connectionString: "kafka-event-bus.services.eqiad.wmflabs:2181/kafka/kafka-event-bus",
+    connectionString: undefined, //"kafka-event-bus.services.eqiad.wmflabs:2181/kafka/kafka-event-bus",
     clientId: 0
 };
 
 var client = new kafka.Client(options.connectionString,
         options.clientId, options);
 var producer = new HighLevelProducer(client);
+
+producer.on('ready', console.log);
+
+producer.on('error', console.log)
 
 
 // shortcut
@@ -34,7 +38,6 @@ var router = sUtil.router();
 var app;
 
 
-queue.setup();
 
 var exampleSchema = {
 	"title": "Example Schema",
@@ -53,7 +56,7 @@ var exampleSchema = {
 	"required": ["url", "name"]
 };
 
-var ajv = require('ajv');
+var ajv = require('ajv')();
 // add each validator
 var validateMessage = ajv.compile(exampleSchema);
 
