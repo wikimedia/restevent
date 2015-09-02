@@ -5,7 +5,6 @@ var P = require('bluebird');
 var preq = require('preq');
 var domino = require('domino');
 var sUtil = require('../lib/util');
-var queue = require('../lib/queue');
 var kafka = P.promisifyAll(require('kafka-node'));
 var HighLevelProducer = kafka.HighLevelProducer;
 var KeyedMessage = kafka.KeyedMessage;
