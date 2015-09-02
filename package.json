@@ -1,0 +1,56 @@
+{
+  "name": "service-template-node",
+  "version": "0.2.1",
+  "description": "A blueprint for MediaWiki REST API services",
+  "main": "./app.js",
+  "scripts": {
+    "start": "service-runner",
+    "test": "mocha",
+    "docker-start": "service-runner docker-start",
+    "docker-test": "service-runner docker-test",
+    "coverage": "istanbul cover _mocha -- -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wikimedia/service-template-node.git"
+  },
+  "keywords": [
+    "REST",
+    "API",
+    "service template",
+    "MediaWiki"
+  ],
+  "author": "Wikimedia Service Team <services@wikimedia.org>",
+  "contributors": [],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://phabricator.wikimedia.org/tag/service-template-node/"
+  },
+  "homepage": "https://github.com/wikimedia/service-template-node",
+  "dependencies": {
+    "bluebird": "~2.8.2",
+    "body-parser": "^1.13.2",
+    "bunyan": "^1.4.0",
+    "cassandra-uuid": "^0.0.2",
+    "compression": "^1.5.1",
+    "domino": "^1.0.18",
+    "express": "^4.13.1",
+    "js-yaml": "^3.3.1",
+    "preq": "^0.4.4",
+    "service-runner": "^0.2.1"
+  },
+  "devDependencies": {
+    "extend": "^3.0.0",
+    "istanbul": "^0.3.17",
+    "mocha": "^2.2.5",
+    "mocha-jshint": "^2.2.3",
+    "mocha-lcov-reporter": "^0.0.2",
+    "swagger-router": "^0.1.1"
+  },
+  "deploy": {
+    "target": "ubuntu",
+    "dependencies": {
+      "_all": []
+    }
+  }
+}
