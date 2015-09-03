@@ -18,7 +18,9 @@ var client = new kafka.Client(options.connectionString,
         options.clientId, options);
 var producer = new HighLevelProducer(client);
 
-producer.on('ready', console.log);
+producer.on('ready', function() {
+    console.log('kafka ready');
+});
 
 producer.on('error', console.log)
 
@@ -52,7 +54,7 @@ var exampleSchema = {
 			"type": "string"
 		}
 	},
-	"required": ["url", "name"]
+	"required": ["url", "type"]
 };
 
 var ajv = require('ajv')();
