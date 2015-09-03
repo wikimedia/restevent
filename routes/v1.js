@@ -22,7 +22,7 @@ producer.on('ready', function() {
     console.log('kafka ready');
 });
 
-producer.on('error', console.log)
+producer.on('error', console.log);
 
 
 // shortcut
@@ -83,7 +83,15 @@ router.put('/topics/:name', function(req, res) {
 
 function validateMessages(topic, messages) {
     messages = messages.map(function(msg) {
-        validateMessage(msg);
+        if (!validateMessage(msg)) {
+            throw new HTTPError({
+                status: 400,
+                body: {
+                    type: 'invalid_message',
+                    msg: msg
+                }
+            });
+        }
         return JSON.stringify(msg);
     });
     return {
