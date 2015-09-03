@@ -1,9 +1,6 @@
 'use strict';
 
-
 var P = require('bluebird');
-var preq = require('preq');
-var domino = require('domino');
 var sUtil = require('../lib/util');
 var kafka = P.promisifyAll(require('kafka-node'));
 var HighLevelProducer = kafka.HighLevelProducer;
@@ -37,8 +34,6 @@ var router = sUtil.router();
  * The main application object reported when this module is require()d
  */
 var app;
-
-
 
 var exampleSchema = {
 	"title": "Example Schema",
