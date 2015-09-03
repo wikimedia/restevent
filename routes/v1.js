@@ -102,7 +102,7 @@ router.post('/topics/:name', function(req, res) {
         var message = validateMessages(req.params.name, req.body);
         return producer.sendAsync([message]);
     })
-    .then(function(res) {
+    .then(function(ret) {
         res.status(200).send('Message enqueued');
     });
 });
