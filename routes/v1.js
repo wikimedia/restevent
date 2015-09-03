@@ -66,7 +66,7 @@ var validateMessage = ajv.compile(exampleSchema);
  */
 router.put('/topics/:name', function(req, res) {
     producer.createTopics([req.params.name]);
-    res.send('Topic created', 200);
+    res.status(200).send('Topic created');
 });
 /*
  * Expected layout
@@ -103,7 +103,7 @@ router.post('/topics/:name', function(req, res) {
         return producer.sendAsync([message]);
     })
     .then(function(res) {
-        res.send('Message enqueued', 200);
+        res.status(200).send('Message enqueued');
     });
 });
 
