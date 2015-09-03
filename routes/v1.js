@@ -83,7 +83,8 @@ function validateMessages(topic, messages) {
                 status: 400,
                 body: {
                     type: 'invalid_message',
-                    msg: msg
+                    original_message: msg,
+                    validation_error: validateMessage.errors,
                 }
             });
         }
