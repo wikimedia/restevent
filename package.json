@@ -1,7 +1,7 @@
 {
-  "name": "service-template-node",
-  "version": "0.2.1",
-  "description": "A blueprint for MediaWiki REST API services",
+  "name": "surge",
+  "version": "1.0.0",
+  "description": "RESTFul event bus",
   "main": "./app.js",
   "scripts": {
     "start": "service-runner",
@@ -12,21 +12,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/wikimedia/service-template-node.git"
+    "url": "git://github.com/wikimedia/surge.git"
   },
   "keywords": [
     "REST",
     "API",
-    "service template",
-    "MediaWiki"
+    "Surge"
   ],
-  "author": "Wikimedia Service Team <services@wikimedia.org>",
+  "author": "Wikimedia Services Team <services@wikimedia.org>",
   "contributors": [],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://phabricator.wikimedia.org/tag/service-template-node/"
+    "url": "https://phabricator.wikimedia.org/tag/surge/"
   },
-  "homepage": "https://github.com/wikimedia/service-template-node",
+  "homepage": "https://github.com/wikimedia/surge",
   "dependencies": {
     "ajv": "^1.2.1",
     "bluebird": "~2.8.2",
