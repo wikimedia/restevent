@@ -3,24 +3,16 @@
 var P = require('bluebird');
 var sUtil = require('../lib/util');
 var kafka = P.promisifyAll(require('kafka-node'));
+var schema = require('../lib/schema');
 var HighLevelProducer = kafka.HighLevelProducer;
 var KeyedMessage = kafka.KeyedMessage;
 
 var options = {
-    connectionString: undefined, //"kafka-event-bus.services.eqiad.wmflabs:2181/kafka/kafka-event-bus",
+    connectionString: undefined,
     clientId: 0
 };
 
-var client = new kafka.Client(options.connectionString,
-        options.clientId, options);
-var producer = new HighLevelProducer(client);
-
-producer.on('ready', function() {
-    console.log('kafka ready');
-});
-
-producer.on('error', console.log);
-
+var client, producer;
 
 // shortcut
 var HTTPError = sUtil.HTTPError;
@@ -35,28 +27,6 @@ var router = sUtil.router();
  */
 var app;
 
-var exampleSchema = {
-	"title": "Example Schema",
-	"type": "object",
-	"properties": {
-		"url": {
-			"type": "string"
-		},
-		"type": {
-			"type": "string"
-		},
-		"details": {
-			"type": "string"
-		}
-	},
-	"required": ["url", "type"]
-};
-
-var ajv = require('ajv')();
-// add each validator
-var validateMessage = ajv.compile(exampleSchema);
-
-
 /**
  * PUT /topics/{name}
  * Create / update a topic. Accepts a JSON schema.
@@ -65,6 +35,7 @@ router.put('/topics/:name', function(req, res) {
     producer.createTopics([req.params.name]);
     res.status(200).send('Topic created');
 });
+
 /*
  * Expected layout
  * {
@@ -75,16 +46,15 @@ router.put('/topics/:name', function(req, res) {
  *    attributes: 2, // default: 0
  * }
  */
-
 function validateMessages(topic, messages) {
     messages = messages.map(function(msg) {
-        if (!validateMessage(msg)) {
+        if (!app.schemaValidator.validate(topic, msg)) {
             throw new HTTPError({
                 status: 400,
                 body: {
                     type: 'invalid_message',
                     original_message: msg,
-                    validation_error: validateMessage.errors,
+                    validation_error: app.schemaValidator.errors,
                 }
             });
         }
@@ -114,15 +84,28 @@ router.post('/topics/:name', function(req, res) {
 });
 
 
+
 module.exports = function(appObj) {
 
+    function init() {
+        options.connectionString = app.conf.provider.host + ':' + app.conf.provider.port;
+        client = new kafka.Client(options.connectionString, options.clientId, options);
+        producer = new HighLevelProducer(client);
+
+        producer.on('ready', function() {
+            console.log('kafka ready');
+        });
+
+        producer.on('error', console.log);
+    }
+
     app = appObj;
+
+    init();
 
     return {
         path: '/',
         api_version: 1,
         router: router
     };
-
 };
-

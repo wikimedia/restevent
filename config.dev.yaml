@@ -48,3 +48,9 @@ services:
       # no_proxy_list:
       #   - domain1.com
       #   - domain2.org
+      provider:
+          name: kafka
+          host: 192.168.122.2
+          port: 2181
+      topics:
+        - example

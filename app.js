@@ -7,6 +7,7 @@ var express = require('express');
 var compression = require('compression');
 var bodyParser = require('body-parser');
 var fs = BBPromise.promisifyAll(require('fs'));
+var schema = require('./lib/schema');
 var sUtil = require('./lib/util');
 var packageInfo = require('./package.json');
 var yaml = require('js-yaml');
@@ -111,6 +112,27 @@ function initApp(options) {
 
 }
 
+/**
+ * Initializes a new JSON schema validator according to the configured
+ * topic list, and stores it in the app objects 'schemaValidator' attribute.
+ *
+ * @param   {object} app; the application object to attach the validator to
+ * @returns {object} a promise that resolves to the app object
+ */
+function initSchemaValidator(app) {
+    var topics = app.conf.topics;
+    if (!topics) {
+        throw new Error('no topics have been configured');
+    }
+    if (!(topics instanceof Array)) {
+        throw new Error('not a valid topic list (\'' + topics + '\')');
+    }
+
+    return schema.createValidator(topics).then(function(v) {
+        app.schemaValidator = v;
+        return app;
+    });
+}
 
 /**
  * Loads all routes declared in routes/ into the app
@@ -186,6 +208,7 @@ function createServer(app) {
 module.exports = function(options) {
 
     return initApp(options)
+    .then(initSchemaValidator)
     .then(loadRoutes)
     .then(createServer);
 
