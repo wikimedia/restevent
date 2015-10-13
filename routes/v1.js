@@ -27,15 +27,6 @@ var router = sUtil.router();
  */
 var app;
 
-/**
- * PUT /topics/{name}
- * Create / update a topic. Accepts a JSON schema.
- */
-router.put('/topics/:name', function(req, res) {
-    producer.createTopics([req.params.name]);
-    res.status(200).send('Topic created');
-});
-
 /*
  * Expected layout
  * {
