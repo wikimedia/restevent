@@ -24,7 +24,7 @@ var app;
  *    messages: ['message body'],// multi messages should be a array, single message can be just a string or a KeyedMessage instance
  *    // These might be best controlled by the proxy
  *    partition: 0, //default 0
- *    attributes: 2, // default: 0
+ *    attributes: 2, // 0 is none, 1 gzip, 2 snappy (default: 0)
  * }
  */
 function validateMessages(topic, messages) {

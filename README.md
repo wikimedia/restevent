@@ -11,7 +11,7 @@ At a minimum, you need to configure the `provider` section for your Kafka broker
       host: 192.168.122.64
       port: 2181
 
-*Note: Kafka needs to configured with `auto.create.topics.enable=true`.*
+*Note: Kafka needs to be configured with `auto.create.topics.enable=true`.*
 
 ## Run
     $ npm install
