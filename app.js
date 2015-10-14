@@ -7,6 +7,7 @@ var express = require('express');
 var compression = require('compression');
 var bodyParser = require('body-parser');
 var fs = BBPromise.promisifyAll(require('fs'));
+var queue = require('./lib/queue');
 var schema = require('./lib/schema');
 var sUtil = require('./lib/util');
 var packageInfo = require('./package.json');
@@ -80,6 +81,22 @@ function initApp(options) {
         app.conf.spec.paths = {};
     }
 
+    // Validate the topics list
+    if (!(app.conf.topics instanceof Array)) {
+        throw new Error('not a valid topic list (\'' + app.conf.topics + '\')');
+    }
+    if (app.conf.topics.length < 1) {
+        throw new Error('no topics have been configured');
+    }
+
+    // Ensure a minimally viable provider config
+    if (!app.conf.provider) {
+        throw new Error('configuration does not specify a provider');
+    }
+    if (!app.conf.provider.type) {
+        throw new Error('provider configuration is missing required type');
+    }
+
     // set the CORS and CSP headers
     app.all('*', function(req, res, next) {
         if(app.conf.cors !== false) {
@@ -120,18 +137,22 @@ function initApp(options) {
  * @returns {object} a promise that resolves to the app object
  */
 function initSchemaValidator(app) {
-    var topics = app.conf.topics;
-    if (!topics) {
-        throw new Error('no topics have been configured');
-    }
-    if (!(topics instanceof Array)) {
-        throw new Error('not a valid topic list (\'' + topics + '\')');
-    }
-
-    return schema.createValidator(topics).then(function(v) {
+    return schema.createValidator(app.conf.topics).then(function(v) {
         app.schemaValidator = v;
         return app;
     });
+}
+
+/**
+ * Initializess a new Producer according to the configured provider, and stores
+ * it in the app objects 'producer' attribute.
+ *
+ * @param   {object} app; the application object to attach the validator to
+ * @returns {object} a promise that resolves to the app object
+ */
+function initProducer(app) {
+    app.producer = queue.getProducer({ conf: app.conf, logger: app.logger });
+    return BBPromise.resolve(app);
 }
 
 /**
@@ -209,6 +230,7 @@ module.exports = function(options) {
 
     return initApp(options)
     .then(initSchemaValidator)
+    .then(initProducer)
     .then(loadRoutes)
     .then(createServer);
 

@@ -2,17 +2,7 @@
 
 var P = require('bluebird');
 var sUtil = require('../lib/util');
-var kafka = P.promisifyAll(require('kafka-node'));
-var schema = require('../lib/schema');
-var HighLevelProducer = kafka.HighLevelProducer;
-var KeyedMessage = kafka.KeyedMessage;
 
-var options = {
-    connectionString: undefined,
-    clientId: 0
-};
-
-var client, producer;
 
 // shortcut
 var HTTPError = sUtil.HTTPError;
@@ -67,7 +57,7 @@ function validateMessages(topic, messages) {
 router.post('/topics/:name', function(req, res) {
     return P.try(function() {
         var message = validateMessages(req.params.name, req.body);
-        return producer.sendAsync([message]);
+        return app.producer.send([message]);
     })
     .then(function(ret) {
         res.status(200).send('Message enqueued');
@@ -78,21 +68,7 @@ router.post('/topics/:name', function(req, res) {
 
 module.exports = function(appObj) {
 
-    function init() {
-        options.connectionString = app.conf.provider.host + ':' + app.conf.provider.port;
-        client = new kafka.Client(options.connectionString, options.clientId, options);
-        producer = new HighLevelProducer(client);
-
-        producer.on('ready', function() {
-            console.log('kafka ready');
-        });
-
-        producer.on('error', console.log);
-    }
-
     app = appObj;
-
-    init();
 
     return {
         path: '/',
