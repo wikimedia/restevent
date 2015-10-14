@@ -18,7 +18,7 @@ At a minimum, you need to configure the `provider` section for your Kafka broker
     $ ./server.js | node_modules/.bin/bunyan
 
 ## Try
-    $ curl -D - -X POST -H "Content-Type: application/json" -d '{ "url": "https://en.wp.org", "type": "fav" }' \
+    $ curl -D - -X POST -H "Content-Type: application/json" -d '[{ "url": "https://en.wp.org", "type": "fav" }]' \
           http://localhost:6927/en.wikipedia.org/v1/topics/example; echo
 
 ## Interface
