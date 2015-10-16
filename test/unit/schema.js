@@ -16,10 +16,10 @@ describe('Schema validation', function() {
             {'url': 'http://localhost', 'type': 'unit', 'details': 'house fav'},
         ];
 
-        return schema.createValidator(['example'])
+        return schema.createValidators({ example: { schema: 'example' } })
         .then(function(v) {
             messages.forEach(function(msg, idx) {
-                assert(v.validate('example', msg), 'schema is invalid (index ' + idx + ')');
+                assert(v.example(msg), 'schema is invalid (index ' + idx + ')');
             });
         });
     });
@@ -31,10 +31,10 @@ describe('Schema validation', function() {
             { 'type': 'unit', 'details': 'house fav' },
         ];
 
-        return schema.createValidator(['example'])
+        return schema.createValidators({ example: {} })
         .then(function(v) {
             messages.forEach(function(msg, idx) {
-                assert(!v.validate('example', msg), 'erroneous validation (index ' + idx + ')');
+                assert(!v.example(msg), 'erroneous validation (index ' + idx + ')');
             });
         });
     });
