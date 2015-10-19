@@ -22,29 +22,38 @@ var app;
  * {
  *    topic: 'topicName',
  *    messages: ['message body'],// multi messages should be a array, single message can be just a string or a KeyedMessage instance
- *    // These might be best controlled by the proxy
- *    partition: 0, //default 0
- *    attributes: 2, // 0 is none, 1 gzip, 2 snappy (default: 0)
  * }
  */
 function validateMessages(topic, messages) {
+    // Check if we have a validator for this topic
+    var validate = app.schemaValidators[topic];
+    if (!validate) {
+        throw new HTTPError({
+            status: 400,
+            body: {
+                type: 'invalid_topic',
+                topic: topic,
+                messages: messages,
+            }
+        });
+    }
+
+    // We have a validator for this topic. Validate the messages.
     messages = messages.map(function(msg) {
-        if (!app.schemaValidator.validate(topic, msg)) {
+        if (!validate(msg)) {
             throw new HTTPError({
                 status: 400,
                 body: {
                     type: 'invalid_message',
                     original_message: msg,
-                    validation_error: app.schemaValidator.errors,
+                    validation_error: validate.errors,
                 }
             });
         }
-        return JSON.stringify(msg);
     });
     return {
         topic: topic,
         messages: messages,
-        attributes: 2, // snappy compression
     };
 }
 

@@ -82,10 +82,10 @@ function initApp(options) {
     }
 
     // Validate the topics list
-    if (!(app.conf.topics instanceof Array)) {
-        throw new Error('not a valid topic list (\'' + app.conf.topics + '\')');
+    if (!(app.conf.topics instanceof Object)) {
+        throw new Error('not a valid topic config (\'' + app.conf.topics + '\')');
     }
-    if (app.conf.topics.length < 1) {
+    if (Object.keys(app.conf.topics).length < 1) {
         throw new Error('no topics have been configured');
     }
 
@@ -131,14 +131,15 @@ function initApp(options) {
 
 /**
  * Initializes a new JSON schema validator according to the configured
- * topic list, and stores it in the app objects 'schemaValidator' attribute.
+ * topic list, and stores it in the app objects 'schemaValidators' attribute.
  *
  * @param   {object} app; the application object to attach the validator to
  * @returns {object} a promise that resolves to the app object
  */
-function initSchemaValidator(app) {
-    return schema.createValidator(app.conf.topics).then(function(v) {
-        app.schemaValidator = v;
+function initSchemaValidators(app) {
+    return schema.createValidators(app.conf.topics)
+    .then(function(v) {
+        app.schemaValidators = v;
         return app;
     });
 }
@@ -227,12 +228,20 @@ function createServer(app) {
  * object to it.
  */
 module.exports = function(options) {
+    var app;
 
     return initApp(options)
-    .then(initSchemaValidator)
+    .then(function(app) {
+        app = app;
+        return app;
+    })
+    .then(initSchemaValidators)
     .then(initProducer)
     .then(loadRoutes)
-    .then(createServer);
+    .then(createServer)
+    .catch(function(e) {
+        app.logger.log('fatal', e);
+    });
 
 };
 

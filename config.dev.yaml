@@ -53,4 +53,5 @@ services:
           host: 192.168.122.64
           port: 2181
       topics:
-        - example
+        example:
+          schema: example
