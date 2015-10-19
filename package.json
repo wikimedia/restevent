@@ -1,7 +1,7 @@
 {
   "name": "surge",
   "version": "1.0.0",
-  "description": "RESTFul event bus",
+  "description": "RESTful event bus",
   "main": "./app.js",
   "scripts": {
     "start": "service-runner",
