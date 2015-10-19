@@ -35,7 +35,7 @@ services:
       # interface: localhost # uncomment to only listen on localhost
       # more per-service config settings
       # the location of the spec, defaults to spec.yaml if not specified
-      spec: ./spec.template.yaml
+      # spec: ./spec.template.yaml
       # allow cross-domain requests to the API (default '*')
       cors: '*'
       # to disable use:
@@ -48,6 +48,16 @@ services:
       # no_proxy_list:
       #   - domain1.com
       #   - domain2.org
+      # the list of incoming request headers that can be logged; if left empty,
+      # the following headers are allowed: cache-control, content-length,
+      # content-type, if-match, user-agent, x-request-id
+      # log_header_whitelist:
+      #   - cache-control
+      #   - content-length
+      #   - content-type
+      #   - if-match
+      #   - user-agent
+      #   - x-request-id
       provider:
           type: kafka
           host: 192.168.122.64

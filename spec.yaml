@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
-  version: 0.2.1
-  title: WMF Node.JS Service Template
-  description: A template for creating Node.JS services
+  version: 1.0.0
+  title: Surge
+  description: RESTful event bus
   termsOfService: https://wikimediafoundation.org/wiki/Terms_of_Use
   contact:
     name: the Wikimedia Services team
@@ -52,7 +52,6 @@ paths:
               fooo: true
           response:
             status: 404
-  # from routes/v1.js
 
   # from routes/info.js
   /_info:
@@ -119,84 +118,5 @@ paths:
           request: {}
           response:
             status: 301
-  # from routes/ex.js
-  /ex/err/array:
-    get:
-      tags:
-        - Example
-        - Error
-        - Internal error
-      description: Generates an internal error due to a wrong array declaration
-      produces:
-        - application/json
-      x-amples:
-        - title: wrong array declaration example
-          request: {}
-          response:
-            status: 500
-            headers:
-              content-type: application/json
-  /ex/err/file:
-    get:
-      tags:
-        - Example
-        - Error
-        - Internal error
-      description: Generates an internal error due to a non-existing file
-      produces:
-        - application/json
-      x-amples:
-        - title: non-existing file example
-          request: {}
-          response:
-            status: 500
-            headers:
-              content-type: application/json
-  /ex/err/manual/error:
-    get:
-      tags:
-        - Example
-        - Error
-        - Internal error
-      description: Generates an internal error due to a user-thrown error
-      produces:
-        - application/json
-      x-amples:
-        - title: user error example
-          request: {}
-          response:
-            status: 500
-            headers:
-              content-type: application/json
-  /ex/err/manual/deny:
-    get:
-      tags:
-        - Example
-        - Error
-        - Access denied
-      description: Generates an access-denied error
-      produces:
-        - application/json
-      x-amples:
-        - title: access denied error example
-          request: {}
-          response:
-            status: 403
-            headers:
-              content-type: application/json
-  /ex/err/manual/auth:
-    get:
-      tags:
-        - Example
-        - Error
-        - Unauthorised access
-      description: Generates an unauthorised error
-      produces:
-        - application/json
-      x-amples:
-        - title: unauthorised error example
-          request: {}
-          response:
-            status: 401
-            headers:
-              content-type: application/json
+
+  # from routes/v1.js
