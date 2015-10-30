@@ -165,8 +165,11 @@ function initSchemaValidators(app) {
  * @returns {object} a promise that resolves to the app object
  */
 function initProducer(app) {
-    app.producer = queue.getProducer({ conf: app.conf, logger: app.logger });
-    return BBPromise.resolve(app);
+    return queue.getProducer({ conf: app.conf, logger: app.logger })
+    .then(function(producer) {
+        app.producer = producer;
+        return app;
+    });
 }
 
 /**
