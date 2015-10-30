@@ -26,7 +26,7 @@ var app;
  */
 function validateMessages(topic, messages) {
     // Check if we have a validator for this topic
-    var validate = app.schemaValidators[topic];
+    var validate = app.schemas[topic] && app.schemas[topic].validator;
     if (!validate) {
         throw new HTTPError({
             status: 400,
@@ -58,6 +58,46 @@ function validateMessages(topic, messages) {
         messages: messages
     };
 }
+
+
+/**
+ * GET /topics/
+ * Gets the list of available topics to post to
+ */
+router.get('/topics/', function(req, res) {
+
+    var schemaList = Object.keys(app.schemas);
+
+    if (!schemaList.length) {
+        throw new HTTPError({
+            status: 404,
+            type: 'not_found',
+            title: 'No topic',
+            detail: 'No topic has been defined'
+        });
+    }
+
+    res.status(200).json({ items: schemaList }).end();
+
+});
+
+
+router.get('/topics/:name', function(req, res) {
+
+    var topic = req.params.name;
+
+    if (!app.schemas[topic]) {
+        throw new HTTPError({
+            status: 404,
+            type: 'not_found',
+            title: 'No such topic',
+            detail: 'The topic "' + topic + '" does not exist'
+        });
+    }
+
+    res.status(200).json(app.schemas[topic].definition).end();
+
+});
 
 
 /**
