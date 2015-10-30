@@ -50,7 +50,7 @@ properties:
     type: integer
     minimum: 1
     description: the revision ID that the edit is based on
-  save_time:
+  save_dt:
     type: string
     format: date-time
     description: the time stamp of the revision in ISO8601 format
@@ -67,4 +67,4 @@ required:
   - event
   - title
   - revision
-  - save_time
+  - save_dt
