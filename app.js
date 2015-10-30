@@ -251,8 +251,8 @@ module.exports = function(options) {
     var app;
 
     return initApp(options)
-    .then(function(app) {
-        app = app;
+    .then(function(appObj) {
+        app = appObj;
         return app;
     })
     .then(initSchemaValidators)

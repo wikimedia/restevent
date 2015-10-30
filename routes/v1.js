@@ -33,27 +33,29 @@ function validateMessages(topic, messages) {
             body: {
                 type: 'invalid_topic',
                 topic: topic,
-                messages: messages,
+                messages: messages
             }
         });
     }
 
     // We have a validator for this topic. Validate the messages.
+    if (!Array.isArray(messages)) {
+        messages = [messages];
+    }
     messages = messages.map(function(msg) {
         if (!validate(msg)) {
             throw new HTTPError({
                 status: 400,
-                body: {
-                    type: 'invalid_message',
-                    original_message: msg,
-                    validation_error: validate.errors,
-                }
+                type: 'invalid_message',
+                original_message: msg,
+                detail: validate.errors
             });
         }
+        return msg;
     });
     return {
         topic: topic,
-        messages: messages,
+        messages: messages
     };
 }
 

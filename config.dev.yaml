@@ -60,8 +60,8 @@ services:
       #   - x-request-id
       provider:
           type: kafka
-          host: 192.168.122.64
-          port: 2181
+          # host: 192.168.122.64
+          # port: 2181
       topics:
         example:
           schema: example
