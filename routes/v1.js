@@ -64,10 +64,8 @@ function validateMessages(topic, messages) {
  * associated with this topic.
  */
 router.post('/topics/:name', function(req, res) {
-    return P.try(function() {
-        var message = validateMessages(req.params.name, req.body);
-        return app.producer.send([message]);
-    })
+    var message = validateMessages(req.params.name, req.body);
+    return app.producer.send([message])
     .then(function(ret) {
         res.status(200).send('Message enqueued');
     });
