@@ -33,27 +33,29 @@ function validateMessages(topic, messages) {
             body: {
                 type: 'invalid_topic',
                 topic: topic,
-                messages: messages,
+                messages: messages
             }
         });
     }
 
     // We have a validator for this topic. Validate the messages.
+    if (!Array.isArray(messages)) {
+        messages = [messages];
+    }
     messages = messages.map(function(msg) {
         if (!validate(msg)) {
             throw new HTTPError({
                 status: 400,
-                body: {
-                    type: 'invalid_message',
-                    original_message: msg,
-                    validation_error: validate.errors,
-                }
+                type: 'invalid_message',
+                original_message: msg,
+                detail: validate.errors
             });
         }
+        return msg;
     });
     return {
         topic: topic,
-        messages: messages,
+        messages: messages
     };
 }
 
@@ -64,10 +66,8 @@ function validateMessages(topic, messages) {
  * associated with this topic.
  */
 router.post('/topics/:name', function(req, res) {
-    return P.try(function() {
-        var message = validateMessages(req.params.name, req.body);
-        return app.producer.send([message]);
-    })
+    var message = validateMessages(req.params.name, req.body);
+    return app.producer.sendBatch([message])
     .then(function(ret) {
         res.status(200).send('Message enqueued');
     });

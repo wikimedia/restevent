@@ -2,6 +2,20 @@ language: node_js
 
 sudo: false
 
+addons:
+  apt:
+    packages:
+      - default-jre
+      - zookeeperd
+
+install:
+  - npm install
+  - wget http://mirror.cc.columbia.edu/pub/software/apache/kafka/0.8.2.1/kafka_2.11-0.8.2.1.tgz
+  - tar xvzf kafka_2.11-0.8.2.1.tgz
+
+before_script:
+  - cd kafka_2.11-0.8.2.1/ && nohup bin/kafka-server-start.sh config/server.properties > kafka.log 2>&1 &
+
 node_js:
     - "0.10"
     - "0.12"
