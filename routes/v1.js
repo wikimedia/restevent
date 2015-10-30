@@ -121,7 +121,7 @@ module.exports = function(appObj) {
 
     return {
         path: '/',
-        api_version: 1,
+        skip_domain: true,
         router: router
     };
 };
