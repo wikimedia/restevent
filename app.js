@@ -168,6 +168,8 @@ function initProducer(app) {
     return queue.getProducer({ conf: app.conf, logger: app.logger })
     .then(function(producer) {
         app.producer = producer;
+        return producer.createTopics(Object.keys(app.schemaValidators));
+    }).then(function() {
         return app;
     });
 }
