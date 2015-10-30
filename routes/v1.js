@@ -67,7 +67,7 @@ function validateMessages(topic, messages) {
  */
 router.post('/topics/:name', function(req, res) {
     var message = validateMessages(req.params.name, req.body);
-    return app.producer.send([message])
+    return app.producer.sendBatch([message])
     .then(function(ret) {
         res.status(200).send('Message enqueued');
     });
