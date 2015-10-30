@@ -143,16 +143,16 @@ function initApp(options) {
 }
 
 /**
- * Initializes a new JSON schema validator according to the configured
- * topic list, and stores it in the app objects 'schemaValidators' attribute.
+ * Initializes the list of schema definitions for the configured topic
+ * list, and stores it in the app object's 'schemas' attribute.
  *
  * @param   {object} app; the application object to attach the validator to
  * @returns {object} a promise that resolves to the app object
  */
-function initSchemaValidators(app) {
-    return schema.createValidators(app.conf.topics)
-    .then(function(v) {
-        app.schemaValidators = v;
+function initSchemas(app) {
+    return schema.getSchemas(app.conf.topics)
+    .then(function(s) {
+        app.schemas = s;
         return app;
     });
 }
@@ -161,7 +161,7 @@ function initSchemaValidators(app) {
  * Initializess a new Producer according to the configured provider, and stores
  * it in the app objects 'producer' attribute.
  *
- * @param   {object} app; the application object to attach the validator to
+ * @param   {object} app; the application object to attach the schemas to
  * @returns {object} a promise that resolves to the app object
  */
 function initProducer(app) {
@@ -258,7 +258,7 @@ module.exports = function(options) {
         app = appObj;
         return app;
     })
-    .then(initSchemaValidators)
+    .then(initSchemas)
     .then(initProducer)
     .then(loadRoutes)
     .then(createServer)
