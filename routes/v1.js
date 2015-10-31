@@ -61,10 +61,10 @@ function validateMessages(topic, messages) {
 
 
 /**
- * GET /topics/
+ * GET /v1/topics/
  * Gets the list of available topics to post to
  */
-router.get('/topics/', function(req, res) {
+router.get('/v1/topics/', function(req, res) {
 
     var schemaList = Object.keys(app.schemas);
 
@@ -82,7 +82,11 @@ router.get('/topics/', function(req, res) {
 });
 
 
-router.get('/topics/:name', function(req, res) {
+/**
+ * GET /v1/topics/{name}
+ * Gets the schema associated with a topic
+ */
+router.get('/v1/topics/:name', function(req, res) {
 
     var topic = req.params.name;
 
@@ -101,7 +105,7 @@ router.get('/topics/:name', function(req, res) {
 
 
 /**
- * POST /topics/{name}/
+ * POST /v1/topics/{name}/
  * Enqueue one or more events. Each event needs to conform to the JSON schema
  * associated with this topic.
  */
