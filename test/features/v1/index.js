@@ -14,9 +14,11 @@ describe('Topic definitions', function() {
 
     before(function () { return server.start(); });
 
+    var uri = server.config.uri + 'v1/topics/';
+
     it('get topics list', function() {
         return preq.get({
-            uri: server.config.uri + 'wwww/v1/topics/'
+            uri: uri
         }).then(function(res) {
             assert.status(res, 200);
             assert.deepEqual(!!res.body.items, true, 'No items returned!');
@@ -25,7 +27,7 @@ describe('Topic definitions', function() {
 
     it('get topic schema', function() {
         return preq.get({
-            uri: server.config.uri + 'wwww/v1/topics/example'
+            uri: uri + 'example'
         }).then(function(res) {
             assert.status(res, 200);
             assert.deepEqual(!!res.body.properties, true);
