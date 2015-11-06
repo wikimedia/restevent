@@ -3,7 +3,7 @@ description: Represents a MW Page Edit event
 type: object
 properties:
   # global event fields
-  event:
+  meta:
     type: object
     properties:
       uri:
@@ -17,11 +17,11 @@ properties:
       id:
         type: string
         pattern: '^[a-fA-F0-9]{8}(-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12}$'
-        description: the unique ID of this event; should match the ts field
-      ts:
+        description: the unique ID of this event; should match the dt field
+      dt:
         type: string
         format: date-time
-        description: 'the time stamp of the event, in ISO8601 format'
+        description: the time stamp of the event, in ISO8601 format
       domain:
         type: string
         description: the domain the event pertains to
@@ -29,7 +29,7 @@ properties:
       - uri
       - request_id
       - id
-      - ts
+      - dt
       - domain
   # event-specific fields
   title:
@@ -64,7 +64,7 @@ properties:
     type: string
     description: the summary comment left by the user
 required:
-  - event
+  - meta
   - title
   - revision
   - save_dt
