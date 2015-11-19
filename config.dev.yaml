@@ -65,3 +65,8 @@ services:
       topics:
         example:
           schema: example
+        mw-page-delete: {}
+        mw-page-edit: {}
+        mw-page-move: {}
+        mw-page-restore: {}
+        mw-revision-visibilityset: {}
