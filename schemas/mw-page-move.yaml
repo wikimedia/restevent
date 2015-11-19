@@ -6,6 +6,9 @@ properties:
   meta:
     type: object
     properties:
+      topic:
+        type: string
+        description: the queue topic name this message belongs to
       uri:
         type: string
         format: uri
@@ -26,8 +29,8 @@ properties:
         type: string
         description: the domain the event pertains to
     required:
+      - topic
       - uri
-      - request_id
       - id
       - dt
       - domain
@@ -42,16 +45,16 @@ properties:
     type: integer
     minimum: 1
     description: the page ID of the moved page
-  old_revision:
+  old_revision_id:
     type: integer
     minimum: 1
     description: the last revision ID before the move
-  new_revision:
+  new_revision_id:
     type: integer
     minimum: 1
     description: the first revision ID after the move
   user_id:
-    type: string
+    type: integer
     description: the user that performed the move
   user_text:
     type: string

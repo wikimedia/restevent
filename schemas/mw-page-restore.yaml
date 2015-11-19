@@ -6,6 +6,9 @@ properties:
   meta:
     type: object
     properties:
+      topic:
+        type: string
+        description: the queue topic name this message belongs to
       uri:
         type: string
         format: uri
@@ -26,8 +29,8 @@ properties:
         type: string
         description: the domain the event pertains to
     required:
+      - topic
       - uri
-      - request_id
       - id
       - dt
       - domain
@@ -47,7 +50,7 @@ properties:
     type: integer
     description: the namespace ID the page belongs to
   user_id:
-    type: string
+    type: integer
     description: the user that performed the restoration
   user_text:
     type: string
