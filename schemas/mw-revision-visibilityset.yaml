@@ -6,6 +6,9 @@ properties:
   meta:
     type: object
     properties:
+      topic:
+        type: string
+        description: the queue topic name this message belongs to
       uri:
         type: string
         format: uri
@@ -26,13 +29,13 @@ properties:
         type: string
         description: the domain the event pertains to
     required:
+      - topic
       - uri
-      - request_id
       - id
       - dt
       - domain
   # event-specific fields
-  revision:
+  revision_id:
     type: integer
     minimum: 1
     description: the revision ID the visibility of which is being changed
@@ -52,11 +55,11 @@ properties:
         type: boolean
         description: whether the comment of the revision is available
   user_id:
-    type: string
+    type: integer
     description: the user that performed the visibility change
   user_text:
     type: string
     description: the text representation of the user
 required:
   - meta
-  - revision
+  - revision_id

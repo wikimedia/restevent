@@ -6,6 +6,9 @@ properties:
   meta:
     type: object
     properties:
+      topic:
+        type: string
+        description: the queue topic name this message belongs to
       uri:
         type: string
         format: uri
@@ -26,8 +29,8 @@ properties:
         type: string
         description: the domain the event pertains to
     required:
+      - topic
       - uri
-      - request_id
       - id
       - dt
       - domain
@@ -42,11 +45,11 @@ properties:
   namespace:
     type: integer
     description: the namespace ID the page belongs to
-  revision:
+  revision_id:
     type: integer
     minimum: 1
     description: the revision ID created by this edit event
-  base_revision:
+  parent_revision_id:
     type: integer
     minimum: 1
     description: the revision ID that the edit is based on
@@ -55,7 +58,7 @@ properties:
     format: date-time
     description: the time stamp of the revision in ISO8601 format
   user_id:
-    type: string
+    type: integer
     description: the user that performed the edit
   user_text:
     type: string
@@ -66,5 +69,5 @@ properties:
 required:
   - meta
   - title
-  - revision
+  - revision_id
   - save_dt
