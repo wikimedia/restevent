@@ -1,5 +1,6 @@
 title: MediaWiki Revision Visibility Set
 description: Represents a MW Revision Visibility Set event
+$schema: http://json-schema.org/draft-04/schema#
 type: object
 properties:
   # global event fields
@@ -9,6 +10,12 @@ properties:
       topic:
         type: string
         description: the queue topic name this message belongs to
+      schema:
+        type: string
+        description: The name of this schema
+      revision:
+        type: integer
+        description: The revision of this schema
       uri:
         type: string
         format: uri
