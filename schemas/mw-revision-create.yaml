@@ -1,5 +1,5 @@
-title: MediaWiki Revision Visibility Set
-description: Represents a MW Revision Visibility Set event
+title: MediaWiki Revision Creation
+description: Represents a MW Revision Creation event
 $schema: http://json-schema.org/draft-04/schema#
 type: object
 properties:
@@ -43,31 +43,39 @@ properties:
       - dt
       - domain
   # event-specific fields
-  revision_id:
+  page_title:
+    type: string
+    description: the title of the affected page
+  page_id:
     type: integer
     minimum: 1
-    description: the revision ID the visibility of which is being changed
-  hidden:
-    type: object
-    properties:
-      sha1:
-        type: boolean
-        description: "whether the SHA1 of the revision's text is available"
-      text:
-        type: boolean
-        description: "whether the revision's text is available"
-      user:
-        type: boolean
-        description: "whether the author of the revision's text is available"
-      comment:
-        type: boolean
-        description: whether the comment of the revision is available
+    description: the page ID of the affected page
+  page_namespace:
+    type: integer
+    description: the namespace ID the page belongs to
+  rev_id:
+    type: integer
+    minimum: 1
+    description: the revision ID created by this event
+  rev_parent_id:
+    type: integer
+    minimum: 1
+    description: the revision ID that this newly-created revision is based on
+  rev_timestamp:
+    type: string
+    format: date-time
+    description: the time stamp of the revision in ISO8601 format
   user_id:
     type: integer
-    description: the user that performed the visibility change
+    description: the user that performed the edit
   user_text:
     type: string
     description: the text representation of the user
+  comment:
+    type: string
+    description: the summary comment left by the user
 required:
   - meta
-  - revision_id
+  - page_title
+  - rev_id
+  - rev_timestamp
